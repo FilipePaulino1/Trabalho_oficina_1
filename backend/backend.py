@@ -1,12 +1,4 @@
 #Backend para sistema de recomendação
-#REST Api:
-#   - POST /login
-#   Retorna o id do usuário se sucedido
-#   - GET /recomendações
-#   Retorna as recomendações do cliente
-#   - POST /avaliar
-#   Avalia um certo item
-
 from fastapi import FastAPI, Response, Form
 from typing import Annotated
 
@@ -32,13 +24,13 @@ def cosine_similarity(u_ratings: dict, v_ratings: dict) -> float:
 
 app = FastAPI()
 
-#@app.post("/login")
-#async def login(username: Annotated[str, Form()]):
-#    for user in users.values():
-#        if user.name == username:
-#            return { 'suceeded' : True, 'userId' : user.id }
-#
-#    return { 'suceeded' : False }
+@app.post("/logar")
+async def login(username: Annotated[str, Form()]):
+    for user in users.values():
+        if user.name == username:
+            return { 'suceeded' : True, 'userId' : user.id }
+
+    return { 'suceeded' : False }
 
 @app.get("/users")
 async def usuarios():
@@ -174,9 +166,9 @@ def recomendacoes(userId: int, k: int = 5, n: int = 20):
         {
             "name": users[userId].name,
             "rating": { movies[k].title : v for k, v in users[userId].ratings.items() },
-            "sim": sim
+            "sim": s
         }
-        for userId, sim in vizinhos
+        for userId, s in vizinhos
     ]
 
     return resposta

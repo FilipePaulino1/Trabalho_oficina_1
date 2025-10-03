@@ -29,14 +29,14 @@ with open('dataset/movies.csv', newline='') as file_movies:
         movieId = int(row['movieId'])
 
         #Desconsidere os filmes que nenhum usuário avaliou
-        #rated = False
-        #for user in users.values():
-        #    if movieId in user.ratings:
-        #        rated = True
-        #        break
-        #
-        #if not rated:
-        #    continue
+        rated = False
+        for user in users.values():
+            if movieId in user.ratings:
+                rated = True
+                break
+        
+        if not rated:
+            continue
 
         movies[movieId] = Movie(movieId, row['title'].strip('"'), row['imdbId'], genres)
 

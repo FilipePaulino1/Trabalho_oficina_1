@@ -42,6 +42,4 @@ if submit:
 
     st.dataframe(data)
 
-    #st.dataframe(panda.DataFrame.from_dict(data))
-
     movies_grid(movies)

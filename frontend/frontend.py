@@ -5,16 +5,17 @@ home_page = st.Page('pages/recommendations.py', title = 'Recomendações')
 search_page = st.Page('pages/search.py', title = 'Buscar Filmes')
 ratings_page = st.Page('pages/ratings.py', title = 'Minhas Avaliações')
 
-if 'users' not in st.session_state:
-    st.session_state.users = requests.get('http://localhost:8000/users').json()
-
 with st.sidebar:
-    selected = st.selectbox('Usuário', [user['name'] for user in st.session_state.users])
+    with st.form('usuarios'):
+        username = st.text_input('Usuário')
+        submit = st.form_submit_button('Logar')
 
-    for user in st.session_state.users:
-        if selected == user['name']:
-            st.session_state.user_id = user['id']
-            break
+    if submit:
+        r = requests.post('http://localhost:8000/logar', { 'username' : username }).json()
+        if not r['suceeded']:
+            st.error('Usuário %s não existe' % username)
+        else:
+            st.session_state.user_id = r['userId']
 
     pressed = st.button('Salvar alterações')
     if pressed:
